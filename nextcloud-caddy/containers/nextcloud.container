@@ -5,9 +5,9 @@ Description=Nextcloud container
 ContainerName=nextcloud
 Image=docker.io/library/nextcloud:fpm-alpine
 Pod=nextcloud.pod
-Label=io.containers.autoupdate=registry
-Volume=${HOME}/html:/var/www/html:z  # change if necessary
-Volume=${HOME}/data:/var/www/html/data:z  # change to your data directory
+AutoUpdate=registry
+Volume=nextcloud-html:/var/www/html:Z
+Volume=nextcloud-data:/var/www/html/data:Z
 #Environment=PHP_MEMORY_LIMIT=2G  # default is 512MB
 Environment=REDIS_HOST=127.0.0.1
 Environment=REDIS_HOST_PASSWORD=password_here

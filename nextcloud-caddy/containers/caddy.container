@@ -5,11 +5,10 @@ Description=Caddy container for Nextcloud
 ContainerName=caddy
 Image=docker.io/caddy:latest
 Pod=nextcloud.pod
-Label=io.containers.autoupdate=registry
-# Change if necessary:
-Volume=${HOME}/caddy/caddy_data:/data:Z
-Volume=${HOME}/caddy/Caddyfile:/etc/caddy/Caddyfile:Z
-Volume=${HOME}/html:/var/www/html:ro,z
+AutoUpdate=registry
+Volume=caddy-data:/data:Z
+Volume=caddy/Caddyfile:/etc/caddy/Caddyfile:Z
+Volume=caddy-html:/var/www/html:ro,Z
 
 [Service]
 Restart=on-failure

@@ -5,7 +5,7 @@ Description=Valkey container for Nextcloud
 ContainerName=valkey
 Image=docker.io/valkey/valkey:alpine
 Pod=nextcloud.pod
-Label=io.containers.autoupdate=registry
+AutoUpdate=registry
 Exec=redis-server --requirepass password_here
 
 [Service]
