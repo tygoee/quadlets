@@ -8,13 +8,12 @@ Pod=nextcloud.pod
 AutoUpdate=registry
 Volume=nextcloud-html:/var/www/html:z
 Volume=nextcloud-data:/var/www/html/data:z
+Secret=nextcloud_mysql,type=env,target=MYSQL_PASSWORD
 #Environment=PHP_MEMORY_LIMIT=2G  # default is 512MB
-Environment=REDIS_HOST=127.0.0.1
-Environment=REDIS_HOST_PASSWORD=password_here
-Environment=MYSQL_HOST=127.0.0.1
+Environment=REDIS_HOST=localhost
+Environment=MYSQL_HOST=localhost
 Environment=MYSQL_DATABASE=nextcloud
 Environment=MYSQL_USER=nextcloud
-Environment=MYSQL_PASSWORD=password_here
 
 [Service]
 Restart=on-failure

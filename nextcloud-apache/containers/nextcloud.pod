@@ -4,6 +4,10 @@ Description=Nextcloud pod
 [Pod]
 PodName=nextcloud
 Network=slirp4netns:port_handler=slirp4netns
-#HostName=nextcloud  # will be implemented in the next podman version
 PublishPort=5080:80
-PodmanArgs=--hostname nextcloud
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

@@ -4,13 +4,16 @@ Description=Technitium DNS Server container
 [Container]
 ContainerName=dns-server
 Image=docker.io/technitium/dns-server:latest
-Label=io.containers.autoupdate=registry
+AutoUpdate=registry
 Volume=/etc/localtime:/etc/localtime:ro
-Volume=technitium-dns:/etc/dns:rw,Z
+Volume=technitium-dns:/etc/dns
 PublishPort=5380:5380
 PublishPort=1053:53/tcp
 PublishPort=1053:53/udp
-PodmanArgs=--hostname dns-server
+DNS=1.1.1.1
+DNS=1.0.0.1
+DNS=2606:4700:4700::1111
+DNS=2606:4700:4700::1001
 
 [Service]
 Restart=on-failure

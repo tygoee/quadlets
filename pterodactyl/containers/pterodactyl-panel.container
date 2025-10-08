@@ -1,0 +1,27 @@
+[Unit]
+Description=Pterodactyl panel
+
+[Container]
+ContainerName=pterodactyl-panel
+Image=ghcr.io/pterodactyl/panel:latest
+Pod=pterodactyl.pod
+AutoUpdate=registry
+Volume=pterodactyl-panel:/app/var
+Volume=pterodactyl-nginx:/etc/nginx/http.d
+Volume=pterodactyl-logs:/app/storage/logs
+Secret=pterodactyl_mysql,type=env,target=DB_PASSWORD
+Environment=APP_URL=https://panel.example.com \
+        APP_TIMEZONE=Europe/Amsterdam \
+        TRUSTED_PROXIES='*' \
+        CACHE_DRIVER=redis \
+        SESSION_DRIVER=redis \
+        QUEUE_DRIVER=redis \
+        REDIS_HOST=127.0.0.1 \
+        DB_HOST=127.0.0.1 \
+        DB_PORT=3306
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

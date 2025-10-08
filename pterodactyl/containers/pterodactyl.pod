@@ -1,0 +1,9 @@
+[Unit]
+Description=Pterodactyl pod
+
+[Pod]
+PodName=pterodactyl
+PublishPort=8000:80
+
+[Install]
+WantedBy=default.target

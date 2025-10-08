@@ -6,7 +6,7 @@ ContainerName=valkey
 Image=docker.io/valkey/valkey:alpine
 Pod=nextcloud.pod
 AutoUpdate=registry
-Exec=redis-server --requirepass password_here
+Exec=redis-server
 
 [Service]
 Restart=on-failure

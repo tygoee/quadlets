@@ -1,0 +1,14 @@
+[Unit]
+Description=Redis container for Pterodactyl
+
+[Container]
+ContainerName=pterodactyl-cache
+Image=docker.io/library/redis:alpine
+Pod=pterodactyl.pod
+AutoUpdate=registry
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

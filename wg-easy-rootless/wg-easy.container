@@ -1,0 +1,20 @@
+[Unit]
+Description=WireGuard Easy container
+
+[Container]
+ContainerName=wg-easy
+Image=ghcr.io/wg-easy/wg-easy:latest
+AutoUpdate=registry
+Environment=WG_HOST=example.com
+Secret=wg_easy_hash,type=env,target=PASSWORD_HASH
+Volume=wireguard:/etc/wireguard:Z
+PublishPort=51820:51820/udp
+PublishPort=51821:51821/tcp
+AddCapability=NET_ADMIN SYS_MODULE NET_RAW
+Sysctl=net.ipv4.conf.all.src_valid_mark=1 net.ipv4.ip_forward=1
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
