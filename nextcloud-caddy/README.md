@@ -1,7 +1,7 @@
 # Additional configuration
 
 > [!NOTE]  
-> This configuration is untested as some things changed and I'm not running this container anymore.
+> This configuration is untested as some values have been changed and I'm not running this container anymore.
 
 When running other containers as the same user you might want to prefix the names (like `nextcloud-mariadb.container`)
 
