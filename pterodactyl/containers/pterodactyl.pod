@@ -3,7 +3,11 @@ Description=Pterodactyl pod
 
 [Pod]
 PodName=pterodactyl
+Network=pasta:-T,443
 PublishPort=8000:80
+PublishPort=8080:8080
+AddHost=node.example.com:host-gateway
+AddHost=panel.example.com:host-gateway
 
 [Install]
 WantedBy=default.target
