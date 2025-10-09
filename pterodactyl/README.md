@@ -58,6 +58,29 @@ Restart Wings again. When creating a server, make sure to set Enable OOM Killer 
 
 For logs about Wings, look at `podman logs pterodactyl-wings`. If a server is created and fails to run, search for the container in `podman ps --all` and get its logs with `podman logs container-uuid`, `container-uuid` being a long string of letters and numbers
 
+---
+
+If creating a server fails with an error about `io.weight` not existing, do the following:
+
+- To get your user's current cgroups, run:
+
+```sh
+cat /sys/fs/cgroup/$(cat /proc/self/cgroup | cut -d: -f3)/cgroup.controllers
+```
+
+- First make a directory in `/etc/systemd/system/user@<uid>.service.d/` (leave uid empty for all users). To get your user id, run `id -u` as the user running podman.
+
+- Inside the created directory, create a file named `delegate.conf` containing a `[Service]` option with a `Delegate=` field containing your delegated cgroups and add `io`. Find more information [here](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html#Delegate=).
+
+- Reload and reexec system both as root and the affected user(s):
+
+```sh
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+systemctl --user daemon-reexec
+systemctl --user daemon-reload
+```
+
 # Sources
 
 <https://technotim.live/posts/pterodactyl-game-server/>
@@ -67,3 +90,5 @@ For logs about Wings, look at `podman logs pterodactyl-wings`. If a server is cr
 <https://pterodactyl.io/wings/1.0/installing.html>
 
 <https://github.com/pterodactyl/wings/blob/develop/docker-compose.example.yml>
+
+<https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html#Delegate=>
