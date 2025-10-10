@@ -10,8 +10,10 @@ Volume=pterodactyl-panel:/app/var
 Volume=pterodactyl-nginx:/etc/nginx/http.d
 Volume=pterodactyl-logs:/app/storage/logs
 Secret=pterodactyl_mysql,type=env,target=DB_PASSWORD
+Secret=pterodactyl_redis,type=env,target=REDIS_PASSWORD
+Secret=pterodactyl_hashids,type=env,target=HASHIDS_SALT
 Environment=APP_URL=https://panel.example.com \
-        APP_TIMEZONE=Europe/Amsterdam \
+        APP_TIMEZONE=Region/City \
         TRUSTED_PROXIES='*' \
         CACHE_DRIVER=redis \
         SESSION_DRIVER=redis \
@@ -19,6 +21,7 @@ Environment=APP_URL=https://panel.example.com \
         REDIS_HOST=127.0.0.1 \
         DB_HOST=127.0.0.1 \
         DB_PORT=3306
+        HASHIDS_LENGTH=8
 
 [Service]
 Restart=on-failure

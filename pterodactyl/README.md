@@ -1,19 +1,27 @@
 # Additional configuration
 
-First, add your UID and GID in [`pterodactyl-wings.container`](./containers/pterodactyl-wings.container) and modify the timezone.
+First, add your UID and GID in [`pterodactyl-wings.container`](./containers/pterodactyl-wings.container) and modify the timezone. Also change the timezone in [`pterodacyl-panel.container`](./containers/pterodactyl-panel.container)
 
-## Creating MariaDB passwords
+## Creating passwords
 
-You need to create a MariaDB user password and a MariaDB root password:
+You need to create passwords for MariaDB, Redis and a database salt. It's recommended to use a password generator like the one from [Bitwarden](https://bitwarden.com/password-generator/). Constraints:
+
+- MariaDB user password (`pterodactyl_mysql`): Will be passed as an environment variable, avoid non-alphanumeric characters
+- MariaDB root password (`pterodactyl_mysql_root`): Same as the MariaDB user password
+- Database Hashids salt (`pterodactyl_hashids`): 20 characters, alphanumeric
+- Redis password (`pterodactyl_redis`): Same as MariaDB, as it will be passed as a command-line argument
 
 ```sh
 echo -n "password_here" | podman secret create pterodactyl_mysql -
 echo -n "password_here" | podman secret create pterodactyl_mysql_root -
+echo -n "password_here" | podman secret create pterodactyl_hashids -
+echo -n "password_here" | podman secret create pterodactyl_redis -
 ```
 
 ## Open ports
 
-This is intended to be used with a reverse proxy. Open these ports. This will be needed to connect Panel to Wings. Change example.com for your own hostname, both here and in [pterodactyl.pod](./containers/pterodactyl.pod):
+This is intended to be used with a reverse proxy. Open these ports. This will be needed to connect Panel to Wings. Change example.com for your own hostname. Also do this in [pterodactyl.pod](./containers/pterodactyl.pod) and
+[pterodactyl-panel.container](./containers/pterodactyl-panel.container):
 
 - panel.example.com to port 8000
 - node.example.com to port 8080
@@ -50,11 +58,11 @@ Now, (re)start Wings:
 systemctl --user restart pterodactyl-wings.service
 ```
 
-In the Node's About tab under Information, you should now stop seeing loading icons and start to see information about the node. For running servers you still need to change a few things:
+In the Node's About tab under Information, you should now stop seeing loading icons and start to see information about the node. For running servers you still need to change the log driver:
 
 - In `config.yml`, under `docker` > `log_config`, change `type` to `json-file`
 
-Restart Wings again. When creating a server, make sure to set Enable OOM Killer to *true*, as disabling the OOM Killer fails.
+Restart Wings again. Now you can allocate some ports you need to use for your server(s) in the *Allocation* tab. Under *IP Address* enter `0.0.0.0` (or `::` for IPv6). Now you're ready to create a server. **When creating a server, make sure to set Enable OOM Killer to *true*, as disabling the OOM Killer fails.**
 
 For logs about Wings, look at `podman logs pterodactyl-wings`. If a server is created and fails to run, search for the container in `podman ps --all` and get its logs with `podman logs container-uuid`, `container-uuid` being a long string of letters and numbers
 
@@ -81,6 +89,71 @@ systemctl --user daemon-reexec
 systemctl --user daemon-reload
 ```
 
+Read more in the first answer of [this GitHub issue](https://github.com/containers/podman/discussions/13569).
+
+## Adding a database (optional)
+
+This is optional, unless your server requires a database
+
+- Create a secret for its root password:
+
+```sh
+echo -n "password_here" | podman secret create mysql_root -
+```
+
+- Create a new container `mariadb.container` (seperate from the pod):
+
+```ini
+[Unit]
+Description=MariaDB container for servers
+Requires=pterodactyl.pod
+After=pterodactyl.pod
+
+[Container]
+ContainerName=mariadb
+Image=docker.io/library/mariadb:latest
+Pod=pterodactyl.pod
+AutoUpdate=registry
+Network=pterodactyl_nw
+PublishPort=3310:3310
+Volume=mariadb:/var/lib/mysql
+Secret=mysql_root,type=env,target=MYSQL_ROOT_PASSWORD
+Environment=MYSQL_TCP_PORT=3310
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+```
+
+- Change/add these keys in `pterodacyl.pod` under `[Container]`:
+
+```ini
+Network=pasta:-T,443,-T,3310
+AddHost=mariadb:127.0.0.1
+```
+
+- Add a database user (here the username `servers` is used). More info [here](https://pterodactyl.io/tutorials/mysql_setup.html#creating-a-database-host-for-nodes):
+
+```sh
+podman exec -it mariadb mariadb -u root -p
+# Enter MariaDB root password
+```
+
+```sql
+CREATE USER 'servers'@'%' IDENTIFIED BY 'somepassword';
+GRANT ALL PRIVILEGES ON *.* TO 'servers'@'%' WITH GRANT OPTION;
+```
+
+- Enter `quit;` to exit.
+
+- Now open the web admin panel, go to Databases and add one with these options:
+    - Host: `mariadb`
+    - Port: `3310`
+    - Username: the MariaDB username. I used `servers`
+    - Password: The MariaDB user password you just created.
+
 # Sources
 
 <https://technotim.live/posts/pterodactyl-game-server/>
@@ -92,3 +165,7 @@ systemctl --user daemon-reload
 <https://github.com/pterodactyl/wings/blob/develop/docker-compose.example.yml>
 
 <https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html#Delegate=>
+
+<https://github.com/containers/podman/discussions/13569>
+
+<https://pterodactyl.io/tutorials/mysql_setup.html#creating-a-database-host-for-nodes>
