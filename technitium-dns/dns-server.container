@@ -6,21 +6,14 @@ ContainerName=dns-server
 Image=docker.io/technitium/dns-server:latest
 Volume=/etc/localtime:/etc/localtime:ro
 Volume=technitium-dns:/etc/dns
-# Web console (HTTP)
 PublishPort=5380:5380/tcp
-# Web console (HTTPS)
 #PublishPort=53443:53443/tcp
-# DNS service
 PublishPort=1053:53/tcp
 PublishPort=1053:53/udp
-# DNS-over-TLS service
 #PublishPort=1853:853/tcp
-# DNS-over-QUIC service
 #PublishPort=1853:853/udp
-# DNS-over-HTTPS service
 #PublishPort=8443:443/tcp
 #PublishPort=8443:443/udp
-# DNS-over-HTTP service (reverse proxy)
 #PublishPort=8080:80/tcp
 #PublishPort=8053:8053/tcp
 #PublishPort=1067:67/udp

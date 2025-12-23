@@ -70,7 +70,7 @@ For logs about Wings, look at `podman logs pterodactyl-wings`. If a server is cr
 
 If creating a server fails with an error about `io.weight` not existing, do the following:
 
-- To get your user's current cgroups, run:
+- To get your user's current cgroups to that confirm `io` is not included, run:
 
 ```sh
 cat /sys/fs/cgroup/$(cat /proc/self/cgroup | cut -d: -f3)/cgroup.controllers
@@ -101,30 +101,7 @@ This is optional, unless your server requires a database
 echo -n "password_here" | podman secret create mysql_root -
 ```
 
-- Create a new container `mariadb.container` (seperate from the pod):
-
-```ini
-[Unit]
-Description=MariaDB container for servers
-Requires=pterodactyl.pod
-After=pterodactyl.pod
-
-[Container]
-ContainerName=mariadb
-Image=docker.io/library/mariadb:latest
-Pod=pterodactyl.pod
-Network=pterodactyl_nw
-PublishPort=3310:3310
-Volume=mariadb:/var/lib/mysql
-Secret=mysql_root,type=env,target=MYSQL_ROOT_PASSWORD
-Environment=MYSQL_TCP_PORT=3310
-
-[Service]
-Restart=on-failure
-
-[Install]
-WantedBy=default.target
-```
+- Move `mariadb.container` from `optional/` to `~/.config/containers/systemd/`
 
 - Change/add these keys in `pterodacyl.pod` under `[Container]`:
 

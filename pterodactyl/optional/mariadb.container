@@ -1,0 +1,20 @@
+[Unit]
+Description=MariaDB container for servers
+Requires=pterodactyl.pod
+After=pterodactyl.pod
+
+[Container]
+ContainerName=mariadb
+Image=docker.io/library/mariadb:latest
+Pod=pterodactyl.pod
+Network=pterodactyl_nw
+PublishPort=3310:3310
+Volume=mariadb:/var/lib/mysql
+Secret=mysql_root,type=env,target=MYSQL_ROOT_PASSWORD
+Environment=MYSQL_TCP_PORT=3310
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

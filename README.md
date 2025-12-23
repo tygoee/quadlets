@@ -22,6 +22,8 @@ Feel free to contribute if you wrote a better implementation, some things like p
 
 1. The default quadlet container directory for a rootless system is `~/.config/containers/systemd/`. Place all files from the container/pod in that directory. When running a rootful container, place them in a corresponding [system-wide directory](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html#podman-rootful-unit-search-path), like `/etc/containers`
 
+2. Place the environment (.env) file(s) in `~/.config/containers/environment/` and modify them to your needs. If you need to place them in another directory, modify the container file(s) to point there.
+
 2. Look in the container directory's README file for additional configuration steps and follow them. 
 
 3. Reload the systemd daemon with `systemctl --user daemon-reload`, or when running podman as root: `sudo systemctl daemon-reload`
