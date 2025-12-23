@@ -6,12 +6,17 @@ Feel free to contribute if you wrote a better implementation, some things like p
 
 ## List of containers and pods
 
-- Crafty [View ↗](./crafty)
+- Jellyfin [View ↗](./jellyfin)
 - Nextcloud (Apache) [View ↗](./nextcloud-apache)
 - Nextcloud (Caddy) [View ↗](./nextcloud-caddy)
+- Portainer [View ↗](./portainer)
 - Pterodactyl [View ↗](./pterodactyl)
 - Technitium [View ↗](./technitium-dns)
-- Wireguard-Easy [View ↗](./wg-easy-rootless)
+
+### Unused/not updated containers and pods
+
+- Crafty [View ↗](./old/crafty)
+- WG-Easy [View ↗](./old/wg-easy)
 
 ## Installation instructions
 
@@ -57,10 +62,10 @@ podman logs container_name
 
 ## Quadlet documentation
 
-[podman-systemd.unit - systemd units using Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html#podman-rootful-unit-search-path)
+[podman-systemd.unit - Podman documentation](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html#podman-rootful-unit-search-path)
 
-[Make systemd better for Podman with Quadlet - Red Hat](https://www.redhat.com/en/blog/quadlet-podman)
+[Make systemd better for Podman with Quadlet](https://www.redhat.com/en/blog/quadlet-podman)
 
----
+# License
 
-You're free to use any of these configurations however you like
+You're free to use, share and redistribute any of these configuration files however you like. All documentation (markdown files) is licensed under the [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)

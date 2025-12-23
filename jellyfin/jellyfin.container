@@ -1,0 +1,22 @@
+[Unit]
+Description=Jellyfin container
+
+[Container]
+ContainerName=jellyfin
+Image=docker.io/jellyfin/jellyfin:latest
+Environment=PUID=1001
+Environment=GUID=1001
+Environment=TZ=Europe/Amsteram
+Volume=jellyfin-cache:/cache:Z
+Volume=jellyfin-config:/config:Z
+Volume=/mnt/media:/media:ro,z
+PublishPort=8096:8096
+#PublishPort=8920:8920
+#PublishPort=7359:7359/udp
+#PublishPort=1900:1900/udp
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

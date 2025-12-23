@@ -20,8 +20,8 @@ Open port `5080/tcp` in your firewall or add it to your reverse proxy
 
 # Sources
 
-[Tutorial for running Nextcloud in rootless Podman with mariadb, redis, caddy webserver - Nextcloud community](https://help.nextcloud.com/t/tutorial-for-running-nextcloud-in-rootless-podman-with-mariadb-redis-caddy-webserver-all-behind-a-caddy-reverse-proxy/159216)
+[Tutorial for running Nextcloud in rootless Podman with mariadb, redis, caddy webserver, all behind a caddy reverse proxy -  Support - Nextcloud community](https://help.nextcloud.com/t/tutorial-for-running-nextcloud-in-rootless-podman-with-mariadb-redis-caddy-webserver-all-behind-a-caddy-reverse-proxy/159216)
 
-[podman-systemd.unit - systemd units using Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html#podman-rootful-unit-search-path)
+[podman-systemd.unit - Podman documentation](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html#podman-rootful-unit-search-path)
 
 [podman-volume-ls - Podman documentation](https://docs.podman.io/en/v4.4/markdown/podman-volume-ls.1.html)

@@ -5,7 +5,6 @@ Description=Pterodactyl Wings container
 ContainerName=pterodactyl-wings
 Image=ghcr.io/pterodactyl/wings:latest
 Pod=pterodactyl.pod
-AutoUpdate=registry
 Environment=TZ=Region/City  # timezone
 Environment=WINGS_UID=  # get with id -u
 Environment=WINGS_GID=  # get with id -g

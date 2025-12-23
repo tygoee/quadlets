@@ -5,7 +5,6 @@ Description=Pterodactyl panel
 ContainerName=pterodactyl-panel
 Image=ghcr.io/pterodactyl/panel:latest
 Pod=pterodactyl.pod
-AutoUpdate=registry
 Volume=pterodactyl-panel:/app/var
 Volume=pterodactyl-nginx:/etc/nginx/http.d
 Volume=pterodactyl-logs:/app/storage/logs

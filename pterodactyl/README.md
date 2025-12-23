@@ -20,7 +20,7 @@ echo -n "password_here" | podman secret create pterodactyl_redis -
 
 ## Open ports
 
-This is intended to be used with a reverse proxy. Open these ports. This will be needed to connect Panel to Wings. Change example.com for your own hostname. Also do this in [pterodactyl.pod](./containers/pterodactyl.pod) and
+This is intended to be used with a reverse proxy. Open these ports, to connect Panel to Wings. Change example.com for your own hostname. Also do this in [pterodactyl.pod](./containers/pterodactyl.pod) and
 [pterodactyl-panel.container](./containers/pterodactyl-panel.container):
 
 - panel.example.com to port 8000
@@ -113,7 +113,6 @@ After=pterodactyl.pod
 ContainerName=mariadb
 Image=docker.io/library/mariadb:latest
 Pod=pterodactyl.pod
-AutoUpdate=registry
 Network=pterodactyl_nw
 PublishPort=3310:3310
 Volume=mariadb:/var/lib/mysql
@@ -156,16 +155,16 @@ GRANT ALL PRIVILEGES ON *.* TO 'servers'@'%' WITH GRANT OPTION;
 
 # Sources
 
-<https://technotim.live/posts/pterodactyl-game-server/>
+[I Built the PERFECT Game Server with Pterodactyl and Docker | Techno Tim](https://technotim.live/posts/pterodactyl-game-server/)
 
-<https://pterodactyl.io/panel/1.0/getting_started.html>
+[Getting Started | Pterodactyl](https://pterodactyl.io/panel/1.0/getting_started.html)
 
-<https://pterodactyl.io/wings/1.0/installing.html>
+[Installing Wings | Pterodactyl](https://pterodactyl.io/wings/1.0/installing.html)
 
-<https://github.com/pterodactyl/wings/blob/develop/docker-compose.example.yml>
+[wings/docker-compose.example.yml at develop · pterodactyl/wings](https://github.com/pterodactyl/wings/blob/develop/docker-compose.example.yml)
 
-<https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html#Delegate=>
+[Delegate | systemd.resource-control](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html#Delegate=)
 
-<https://github.com/containers/podman/discussions/13569>
+[How can I enable cgroup controllers while running podman in gnome terminal? · containers/podman · Discussion #13569](https://github.com/containers/podman/discussions/13569)
 
-<https://pterodactyl.io/tutorials/mysql_setup.html#creating-a-database-host-for-nodes>
+[Setting up MySQL | Pterodactyl](https://pterodactyl.io/tutorials/mysql_setup.html#creating-a-database-host-for-nodes)

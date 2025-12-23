@@ -4,14 +4,12 @@ Description=Crafty controller
 [Container]
 ContainerName=crafty
 Image=registry.gitlab.com/crafty-controller/crafty-4:latest
-AutoUpdate=registry
 Volume=crafty-backups:/crafty/backups:Z
 Volume=crafty-logs:/crafty/logs:Z
 Volume=crafty-servers:/crafty/servers:Z
 Volume=crafty-config:/crafty/app/config:Z
 Volume=crafty-import:/crafty/import:Z
 PublishPort=8443:8443
-PublishPort=8123:8123
 PublishPort=19132:19132/udp
 PublishPort=25500-25600:25500-25600
 

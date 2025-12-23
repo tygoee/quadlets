@@ -5,7 +5,6 @@ Description=Redis container for Pterodactyl
 ContainerName=pterodactyl-redis
 Image=docker.io/library/redis:alpine
 Pod=pterodactyl.pod
-AutoUpdate=registry
 Secret=pterodactyl_redis,type=env,target=REDIS_PASSWORD
 Exec=/bin/sh -c "redis-server --requirepass $${REDIS_PASSWORD}"
 [Service]

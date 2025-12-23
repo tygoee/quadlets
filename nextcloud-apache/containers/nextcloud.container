@@ -5,7 +5,6 @@ Description=Nextcloud container
 ContainerName=nextcloud
 Image=docker.io/library/nextcloud:apache
 Pod=nextcloud.pod
-AutoUpdate=registry
 Volume=nextcloud-html:/var/www/html:z
 Volume=nextcloud-data:/var/www/html/data:z
 Secret=nextcloud_mysql,type=env,target=MYSQL_PASSWORD
