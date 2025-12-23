@@ -7,7 +7,7 @@ Network=slirp4netns:port_handler=slirp4netns
 PublishPort=5080:80
 
 [Service]
-Restart=on-failure
+Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

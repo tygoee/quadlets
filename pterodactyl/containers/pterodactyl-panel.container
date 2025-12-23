@@ -14,7 +14,7 @@ Secret=pterodactyl_hashids,type=env,target=HASHIDS_SALT
 EnvironmentFile=%h/.config/containers/environment/pterodactyl.env
 
 [Service]
-Restart=on-failure
+Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

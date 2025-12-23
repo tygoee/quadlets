@@ -9,7 +9,7 @@ Volume=caddy:/etc/caddy
 Volume=nextcloud-html:/var/www/html:ro,z
 
 [Service]
-Restart=on-failure
+Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

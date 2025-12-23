@@ -9,7 +9,7 @@ AutoUpdate=registry
 Exec=redis-server
 
 [Service]
-Restart=on-failure
+Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

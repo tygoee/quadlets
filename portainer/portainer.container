@@ -10,7 +10,7 @@ Volume=portainer-data:/data
 SecurityLabelDisable=true
 
 [Service]
-Restart=on-failure
+Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

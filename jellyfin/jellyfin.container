@@ -4,9 +4,7 @@ Description=Jellyfin container
 [Container]
 ContainerName=jellyfin
 Image=docker.io/jellyfin/jellyfin:latest
-Environment=PUID=1001
-Environment=GUID=1001
-Environment=TZ=Europe/Amsteram
+EnvironmentFile=%h/.config/containers/environment/jellyfin.env
 Volume=jellyfin-cache:/cache:Z
 Volume=jellyfin-config:/config:Z
 Volume=/mnt/media:/media:ro,z
@@ -16,7 +14,7 @@ PublishPort=8096:8096
 #PublishPort=1900:1900/udp
 
 [Service]
-Restart=always
+Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

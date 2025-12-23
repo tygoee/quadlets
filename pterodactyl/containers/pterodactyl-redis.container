@@ -9,7 +9,7 @@ Secret=pterodactyl_redis,type=env,target=REDIS_PASSWORD
 Exec=/bin/sh -c "redis-server --requirepass $${REDIS_PASSWORD}"
 
 [Service]
-Restart=on-failure
+Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

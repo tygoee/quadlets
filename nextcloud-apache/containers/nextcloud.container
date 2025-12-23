@@ -11,7 +11,7 @@ Secret=nextcloud_mysql,type=env,target=MYSQL_PASSWORD
 EnvironmentFile=%h/.config/containers/environment/nextcloud.env
 
 [Service]
-Restart=on-failure
+Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

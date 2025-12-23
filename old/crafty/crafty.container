@@ -14,7 +14,7 @@ PublishPort=19132:19132/udp
 PublishPort=25500-25600:25500-25600
 
 [Service]
-Restart=on-failure
+Restart=unless-stopped
 
 [Install]
 WantedBy=default.target
