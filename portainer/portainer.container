@@ -5,7 +5,7 @@ Description=Portainer container
 ContainerName=portainer
 Image=docker.io/portainer/portainer-ce:latest
 PublishPort=9000:9000
-Volume=${XDG_RUNTIME_DIR}/podman/podman.sock:/var/run/docker.sock
+Volume=%t/podman/podman.sock:/var/run/docker.sock
 Volume=portainer-data:/data
 SecurityLabelDisable=true
 

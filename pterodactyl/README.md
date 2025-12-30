@@ -1,6 +1,12 @@
 # Additional configuration
 
-First, add your UID and GID in [`pterodactyl-wings.container`](./containers/pterodactyl-wings.container) and modify the timezone. Also change the timezone in [`pterodacyl-panel.container`](./containers/pterodactyl-panel.container)
+First, add your UID and GID in [pterodactyl.env](./environment/pterodactyl.env) and modify the timezone.
+
+You also need to enable the podman socket service:
+
+```sh
+systemctl --user enable --now podman.sock
+```
 
 ## Creating passwords
 
@@ -20,25 +26,30 @@ echo -n "password_here" | podman secret create pterodactyl_redis -
 
 ## Open ports
 
-This is intended to be used with a reverse proxy. Open these ports, to connect Panel to Wings. Change example.com for your own hostname. Also do this in [pterodactyl.pod](./containers/pterodactyl.pod) and
-[pterodactyl-panel.container](./containers/pterodactyl-panel.container):
+### With a domain name and HTTPS on a reverse proxy
+
+This pod is best used with a reverse proxy like Caddy or Nginx Proxy Manager. Add your own domain name in [pterodactyl-hosts.env](./environment/pterodactyl-hosts.env). After that, point these domains to the corresponding ports in your reverse proxy:
 
 - panel.example.com to port 8000
-- node.example.com to port 8080
+- node.example.com to port 8080 (only on the server)
 
 Port 443 is passed to the container to allow the reverse proxy to communicate, and to resolve WebSocket addresses
 
+### Without a domain name or reverse proxy (without HTTPS)
+
+If you don't have a domain name, just open port 8000 to access the panel. 
+
 ## Making a symlink to the container
 
-As a user with sudo/root access you will need to run the following to create a symlink. The reason will be explained later:
+After starting the pod (to create the `pterodactyl-data` directory), you will need to run the following to create a symlink as a user with sudo/root access. This required to keep the default server file directory because of a quirk in pterodactyl:
 
 ```
-sudo ln -s /home/<user>/.local/share/containers/storage/volumes/pterodactyl-data/_data /var/lib/pterodactyl
+sudo ln -s ~/.local/share/containers/storage/volumes/pterodactyl-data/_data /var/lib/pterodactyl
 ```
 
 ## Connecting Wings to Pterodactyl Panel
 
-Start Pterodactyl with `systemctl --user start pterodactyl-pod.service` and create a panel user (administrator) and log in:
+Wings will remain in a failed state while doing this, as there's no config file. Start Pterodactyl with `systemctl --user start pterodactyl-pod.service` and create a panel user (administrator) and log in:
 
 ```sh
 podman exec -it pterodactyl-panel php artisan p:user:make
@@ -47,18 +58,26 @@ podman exec -it pterodactyl-panel php artisan p:user:make
 - Click the cog icon in the top right corner for the admin panel
 - Go to locations and create a new a location for the node
 - Go to nodes and create a new node. Make sure to choose the following options and modify the rest to your choice:
-    - Behind Proxy: *Behind Proxy*
-    - Daemon Server File Directory: You probably will want to keep the default option. This does require symlinking the directory to the container, because the podman socket tries to create that directory (only when creating a new server).
-    - Daemon port: *443*
+    - **With a domain name and HTTPS on a reverse proxy**
+        - FQDN: *node.example.com* (use your own domain)
+        - Behind Proxy: *Behind Proxy*
+        - Daemon port: *443*
+    - **Without a domain name or reverse proxy**
+        - FQDN: *localhost*
+        - Communicate Over SSL: *Use HTTP Connection*
+        - Behind Proxy: *Not Behind Proxy* (default)
+        - Daemon port: *8080* (default)
+    - Daemon Server File Directory: You will probably want to keep the default option (this is only possible if you have made a symlink, explained earlier)
+
 - Once created, go to the Configuation tab. Create the file `~/.local/share/containers/storage/volumes/pterodactyl-config/_data/config.yml`, copy the config in there and change the port to 8080
 
-Now, (re)start Wings:
+Now, (re)start Wings, after which it should start in a succeeded state:
 
 ```sh
 systemctl --user restart pterodactyl-wings.service
 ```
 
-In the Node's About tab under Information, you should now stop seeing loading icons and start to see information about the node. For running servers you still need to change the log driver:
+In the Node's About tab under Information, you should now stop seeing loading icons and start to see information about the node. Before running servers you still need to change the log driver:
 
 - In `config.yml`, under `docker` > `log_config`, change `type` to `json-file`
 
@@ -98,22 +117,21 @@ This is optional, unless your server requires a database
 - Create a secret for its root password:
 
 ```sh
-echo -n "password_here" | podman secret create mysql_root -
+echo -n "password_here" | podman secret create pterodactyl_db_root -
 ```
 
 - Move `mariadb.container` from `optional/` to `~/.config/containers/systemd/`
 
-- Change/add these keys in `pterodacyl.pod` under `[Container]`:
+- Change `Network=` in `pterodacyl.pod` under `[Container]`:
 
 ```ini
 Network=pasta:-T,443,-T,3310
-AddHost=mariadb:127.0.0.1
 ```
 
 - Add a database user (here the username `servers` is used). More info [here](https://pterodactyl.io/tutorials/mysql_setup.html#creating-a-database-host-for-nodes):
 
 ```sh
-podman exec -it mariadb mariadb -u root -p
+podman exec -it pterodactyl-db mariadb -u root -p
 # Enter MariaDB root password
 ```
 
@@ -125,7 +143,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'servers'@'%' WITH GRANT OPTION;
 - Enter `quit;` to exit.
 
 - Now open the web admin panel, go to Databases and add one with these options:
-    - Host: `mariadb`
+    - Host: `pterodactyl-db`
     - Port: `3310`
     - Username: the MariaDB username. I used `servers`
     - Password: The MariaDB user password you just created.

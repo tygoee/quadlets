@@ -12,3 +12,5 @@ Open the needed ports from the following table or (in the case of HTTP/HTTPS) ad
 # Sources
 
 [linuxserver/jellyfin - Docker Image](https://hub.docker.com/r/linuxserver/jellyfin)
+
+[Configuration | Jellyfin](https://jellyfin.org/docs/general/administration/configuration/)

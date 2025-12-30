@@ -10,8 +10,5 @@ EnvironmentFile=%h/.config/containers/environment/pterodactyl.env
 Secret=pterodactyl_mysql_root,type=env,target=MYSQL_ROOT_PASSWORD
 Secret=pterodactyl_mysql,type=env,target=MYSQL_PASSWORD
 
-[Service]
-Restart=unless-stopped
-
 [Install]
 WantedBy=default.target

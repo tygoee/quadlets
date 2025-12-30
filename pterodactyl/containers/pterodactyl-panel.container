@@ -13,8 +13,5 @@ Secret=pterodactyl_redis,type=env,target=REDIS_PASSWORD
 Secret=pterodactyl_hashids,type=env,target=HASHIDS_SALT
 EnvironmentFile=%h/.config/containers/environment/pterodactyl.env
 
-[Service]
-Restart=unless-stopped
-
 [Install]
 WantedBy=default.target

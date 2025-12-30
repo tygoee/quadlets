@@ -1,0 +1,15 @@
+[Unit]
+Description=ddclient container
+
+[Container]
+ContainerName=ddclient
+Image=lscr.io/linuxserver/ddclient:latest
+AutoUpdate=registry
+EnvironmentFile=%h/.config/containers/environment/ddclient.env
+Volume=ddclient-config:/config:Z
+
+[Service]
+Restart=unless-stopped
+
+[Install]
+WantedBy=default.target

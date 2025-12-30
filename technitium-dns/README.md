@@ -8,7 +8,11 @@ It's needed to forward port `53` externally to port `1053` internally. Using `fi
 sudo firewall-cmd --add-forward-port=port=53:proto=tcp:toport=1053 --permanent
 sudo firewall-cmd --add-forward-port=port=53:proto=udp:toport=1053 --permanent
 sudo firewall-cmd --add-rich-rule='rule family="ipv6" forward-port port="53" protocol="tcp" to-port="1053"'
-sudo firewall-cmd --add-rich-rule='family="ipv6" forward-port port="53" protocol="udp" to-port="1053"'
+sudo firewall-cmd --add-rich-rule='rule family="ipv6" forward-port port="53" protocol="udp" to-port="1053"'
+sudo firewall-cmd --permanent --direct --add-rule ipv4 nat OUTPUT 0 -o lo -p tcp --dport 53 -j REDIRECT --to-port 1053
+sudo firewall-cmd --permanent --direct --add-rule ipv4 nat OUTPUT 0 -o lo -p udp --dport 53 -j REDIRECT --to-port 1053
+sudo firewall-cmd --permanent --direct --add-rule ipv6 nat OUTPUT 0 -o lo -p tcp --dport 53 -j REDIRECT --to-port 1053
+sudo firewall-cmd --permanent --direct --add-rule ipv6 nat OUTPUT 0 -o lo -p udp --dport 53 -j REDIRECT --to-port 1053
 sudo firewall-cmd --reload
 ```
 
@@ -29,7 +33,7 @@ Now, forward/redirect the following ports, or add them to your reverse proxy in 
 > [!NOTE]  
 > In the container configuration the DNS servers are set to cloudflare. This is done so there are no issues connecting to upstream DNS providers if your local machine's DNS is set to cloudflare.
 
-## Sources
+# Sources
 
 [DnsServer/docker-compose.yml at master · TechnitiumSoftware/DnsServer](https://github.com/TechnitiumSoftware/DnsServer/blob/master/docker-compose.yml)
 

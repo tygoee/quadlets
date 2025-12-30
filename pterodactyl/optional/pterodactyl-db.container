@@ -9,12 +9,12 @@ Image=docker.io/library/mariadb:latest
 Pod=pterodactyl.pod
 Network=pterodactyl_nw
 PublishPort=3310:3310
-Volume=mariadb:/var/lib/mysql
-Secret=mysql_root,type=env,target=MYSQL_ROOT_PASSWORD
+Volume=pterodactyl-db:/var/lib/mysql
+Secret=pterodactyl_db_root,type=env,target=MYSQL_ROOT_PASSWORD
 Environment=MYSQL_TCP_PORT=3310
 
 [Service]
-Restart=on-failure
+Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

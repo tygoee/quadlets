@@ -6,16 +6,13 @@ ContainerName=pterodactyl-wings
 Image=ghcr.io/pterodactyl/wings:latest
 Pod=pterodactyl.pod
 EnvironmentFile=%h/.config/containers/environment/pterodactyl.env
-Volume=${XDG_RUNTIME_DIR}/podman/podman.sock:/var/run/docker.sock
+Volume=%t/podman/podman.sock:/var/run/docker.sock
 Volume=%h/.local/share/containers/storage/overlay-containers:/var/lib/docker/containers
 Volume=pterodactyl-config:/etc/pterodactyl
 Volume=pterodactyl-data:/var/lib/pterodactyl:z
 Volume=pterodactyl-log:/var/log/pterodactyl
 Volume=pterodactyl-tmp:/tmp/pterodactyl
 SecurityLabelDisable=true
-
-[Service]
-Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

@@ -2,10 +2,11 @@
 
 Collection with some of my Quadlet configuration files, or modifications of configurations found on the internet.
 
-Feel free to contribute if you wrote a better implementation, some things like podman secrets may not have been added yet.
+Feel free to contribute if you wrote a better implementation.
 
 ## List of containers and pods
 
+- DDClient [View ↗](./ddclient)
 - Jellyfin [View ↗](./jellyfin)
 - Nextcloud (Apache) [View ↗](./nextcloud-apache)
 - Nextcloud (Caddy) [View ↗](./nextcloud-caddy)
@@ -15,8 +16,8 @@ Feel free to contribute if you wrote a better implementation, some things like p
 
 ### Unused/not updated containers and pods
 
-- Crafty [View ↗](./old/crafty)
-- WG-Easy [View ↗](./old/wg-easy)
+- Crafty [View ↗](./crafty)
+- WG-Easy [View ↗](./wg-easy)
 
 ## Installation instructions
 
@@ -24,13 +25,16 @@ Feel free to contribute if you wrote a better implementation, some things like p
 
 2. Place the environment (.env) file(s) in `~/.config/containers/environment/` and modify them to your needs. If you need to place them in another directory, modify the container file(s) to point there.
 
-2. Look in the container directory's README file for additional configuration steps and follow them. 
+> [!TIP]  
+> These common variables are templatable with Jinja2: `timezone` and `containername.(user,group,uid,gid,home)`
 
-3. Reload the systemd daemon with `systemctl --user daemon-reload`, or when running podman as root: `sudo systemctl daemon-reload`
+3. Look in the container directory's README file for additional configuration steps and follow them. 
 
-4. Start the service by running `systemctl --user start container-name.service`. When there are multiple container files, run the one ending with `-pod`. When running podman as root, run `sudo systemctl start container-name.service` instead. If the services don't show up, try the steps in *Debugging Podman Quadlets*
+4. Reload the systemd daemon with `systemctl --user daemon-reload`, or when running podman as root: `sudo systemctl daemon-reload`
 
-5. If necessary, open the services' ports in your firewall. With `firewalld` (default on RHEL-based distributions) this is done with `firewall-cmd` using `--add-service=` or `--add-port=` with `--permanent`
+5. Start the service by running `systemctl --user start container-name.service`. When there are multiple container files, run the one ending with `-pod`. When running podman as root, run `sudo systemctl start container-name.service` instead. If the services don't show up, try the steps in *Debugging Podman Quadlets*
+
+6. If necessary, open the services' ports in your firewall. With `firewalld` (default on RHEL-based distributions) this is done with `firewall-cmd` using `--add-service=` or `--add-port=` with `--permanent`
 
 ## Debugging Podman Quadlets
 

@@ -8,8 +8,5 @@ Pod=pterodactyl.pod
 Secret=pterodactyl_redis,type=env,target=REDIS_PASSWORD
 Exec=/bin/sh -c "redis-server --requirepass $${REDIS_PASSWORD}"
 
-[Service]
-Restart=unless-stopped
-
 [Install]
 WantedBy=default.target

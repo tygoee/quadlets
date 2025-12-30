@@ -6,6 +6,7 @@ ContainerName=dns-server
 Image=docker.io/technitium/dns-server:latest
 Volume=/etc/localtime:/etc/localtime:ro
 Volume=technitium-dns:/etc/dns
+EnvironmentFile=%h/.config/containers/environment/dns-server.env
 PublishPort=5380:5380/tcp
 #PublishPort=53443:53443/tcp
 PublishPort=1053:53/tcp
