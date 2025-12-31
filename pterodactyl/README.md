@@ -1,6 +1,6 @@
 # Additional configuration
 
-First, add your UID and GID in [pterodactyl.env](./environment/pterodactyl.env) and modify the timezone.
+First and modify the timezone in [pterodactyl.env](./pterodactyl.env).
 
 You also need to enable the podman socket service:
 
@@ -26,12 +26,14 @@ echo -n "password_here" | podman secret create pterodactyl_redis -
 
 ## Open ports
 
+Add your own IP address/domain name in `APP_URL` in [pterodactyl.env](./pterodactyl-hosts.env) and in `AddHost` in [pterodactyl.pod](./containers/pterodactyl.pod).
+
 ### With a domain name and HTTPS on a reverse proxy
 
-This pod is best used with a reverse proxy like Caddy or Nginx Proxy Manager. Add your own domain name in [pterodactyl-hosts.env](./environment/pterodactyl-hosts.env). After that, point these domains to the corresponding ports in your reverse proxy:
+This pod is best used with a reverse proxy like Caddy or Nginx Proxy Manager. Point these domains to the corresponding ports in your reverse proxy:
 
 - panel.example.com to port 8000
-- node.example.com to port 8080 (only on the server)
+- node.example.com to port 8080 (dont open this publicly)
 
 Port 443 is passed to the container to allow the reverse proxy to communicate, and to resolve WebSocket addresses
 

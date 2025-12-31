@@ -7,13 +7,13 @@ Network=pasta:-T,443
 PublishPort=8000:80
 PublishPort=8080:8080
 PublishPort=2022:2022
+# No scheme (http(s)://)
 AddHost=${WINGS_URL}:host-gateway
-AddHost=${PANEL_URL}.:host-gateway
+AddHost=${PANEL_URL}:host-gateway
 AddHost=pterodactyl-db:127.0.0.1
 
 [Service]
 Restart=unless-stopped
-EnvironmentFile=$h/.config/containers/environment/pterodactyl-hosts.env
 
 [Install]
 WantedBy=default.target
