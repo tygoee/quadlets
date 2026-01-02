@@ -69,6 +69,7 @@ podman exec -it pterodactyl-panel php artisan p:user:make
         - Communicate Over SSL: *Use HTTP Connection*
         - Behind Proxy: *Not Behind Proxy* (default)
         - Daemon port: *8080* (default)
+    - Node Visibility: Keep it public, to prevent podman issues. You can prevent outside access with your firewall
     - Daemon Server File Directory: You will probably want to keep the default option (this is only possible if you have made a symlink, explained earlier)
 
 - Once created, go to the Configuation tab. Create the file `~/.local/share/containers/storage/volumes/pterodactyl-config/_data/config.yml`, copy the config in there and change the port to 8080
@@ -91,7 +92,7 @@ For logs about Wings, look at `podman logs pterodactyl-wings`. If a server is cr
 
 If creating a server fails with an error about `io.weight` not existing, do the following:
 
-- To get your user's current cgroups to that confirm `io` is not included, run:
+- To get your user's current delegated cgroup controllers to confirm `io` is not included, run:
 
 ```sh
 cat /sys/fs/cgroup/$(cat /proc/self/cgroup | cut -d: -f3)/cgroup.controllers
@@ -99,7 +100,12 @@ cat /sys/fs/cgroup/$(cat /proc/self/cgroup | cut -d: -f3)/cgroup.controllers
 
 - First make a directory in `/etc/systemd/system/user@<uid>.service.d/` (leave uid empty for all users). To get your user id, run `id -u` as the user running podman.
 
-- Inside the created directory, create a file named `delegate.conf` containing a `[Service]` option with a `Delegate=` field containing your delegated cgroups and add `io`. Find more information [here](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html#Delegate=).
+- Inside the created directory, create a file named `delegate.conf` containing the following. Add your delegated cgroup controllers after `Delegate=`, plus `io`. Find more information [here](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html#Delegate=).
+
+```ini
+[Service]
+Delegate=
+```
 
 - Reload and reexec system both as root and the affected user(s):
 
