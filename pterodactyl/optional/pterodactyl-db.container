@@ -4,10 +4,9 @@ Requires=pterodactyl.pod
 After=pterodactyl.pod
 
 [Container]
-ContainerName=mariadb
+ContainerName=pterodactyl-db
 Image=docker.io/library/mariadb:latest
 AutoUpdate=registry
-Pod=pterodactyl.pod
 Network=pterodactyl_nw
 PublishPort=3310:3310
 Volume=pterodactyl-db:/var/lib/mysql

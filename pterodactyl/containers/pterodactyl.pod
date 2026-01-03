@@ -10,7 +10,7 @@ PublishPort=2022:2022
 # No scheme (http(s)://)
 AddHost=${WINGS_HOST}:host-gateway
 AddHost=${PANEL_HOST}:host-gateway
-AddHost=pterodactyl-db:127.0.0.1
+AddHost=pterodactyl-db:host-gateway
 
 [Service]
 Restart=unless-stopped
