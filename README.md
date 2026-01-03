@@ -1,8 +1,8 @@
 # Quadlets
 
-Collection with some of my Quadlet configuration files, or modifications of configurations found on the internet.
+Collection with some of my Quadlet configuration files, or modifications of configurations found on the internet. Feel free to contribute if you wrote a better implementation.
 
-Feel free to contribute if you wrote a better implementation.
+A part of the these containers has its installation automated with ansible, in my [ansibles repository](https://github.com/tygoee/ansibles)
 
 ## List of containers and pods
 
