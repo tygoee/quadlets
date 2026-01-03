@@ -4,6 +4,7 @@ Description=Crafty controller
 [Container]
 ContainerName=crafty
 Image=registry.gitlab.com/crafty-controller/crafty-4:latest
+AutoUpdate=registry
 Volume=crafty-backups:/crafty/backups:Z
 Volume=crafty-logs:/crafty/logs:Z
 Volume=crafty-servers:/crafty/servers:Z

@@ -4,6 +4,7 @@ Description=Technitium DNS Server container
 [Container]
 ContainerName=dns-server
 Image=docker.io/technitium/dns-server:latest
+AutoUpdate=registry
 Volume=/etc/localtime:/etc/localtime:ro
 Volume=technitium-dns:/etc/dns
 EnvironmentFile=%h/.config/containers/environment/dns-server.env

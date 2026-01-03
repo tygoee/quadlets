@@ -4,6 +4,7 @@ Description=MariaDB container for Pterodactyl
 [Container]
 ContainerName=pterodactyl-mariadb
 Image=docker.io/library/mariadb:latest
+AutoUpdate=registry
 Pod=pterodactyl.pod
 Volume=pterodactyl-mariadb:/var/lib/mysql
 EnvironmentFile=%h/.config/containers/environment/pterodactyl.env

@@ -4,6 +4,7 @@ Description=Jellyfin container
 [Container]
 ContainerName=jellyfin
 Image=docker.io/jellyfin/jellyfin:latest
+AutoUpdate=registry
 EnvironmentFile=%h/.config/containers/environment/jellyfin.env
 Volume=jellyfin-cache:/cache:Z
 Volume=jellyfin-config:/config:Z

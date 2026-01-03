@@ -4,14 +4,12 @@ Description=Nextcloud container
 [Container]
 ContainerName=nextcloud
 Image=docker.io/library/nextcloud:apache
+AutoUpdate=registry
 Pod=nextcloud.pod
 Volume=nextcloud-html:/var/www/html:z
 Volume=nextcloud-data:/var/www/html/data:z
 Secret=nextcloud_mysql,type=env,target=MYSQL_PASSWORD
 EnvironmentFile=%h/.config/containers/environment/nextcloud.env
-
-[Service]
-Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

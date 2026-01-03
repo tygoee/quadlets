@@ -6,11 +6,14 @@ After=pterodactyl.pod
 [Container]
 ContainerName=mariadb
 Image=docker.io/library/mariadb:latest
+AutoUpdate=registry
 Pod=pterodactyl.pod
 Network=pterodactyl_nw
 PublishPort=3310:3310
 Volume=pterodactyl-db:/var/lib/mysql
 Secret=pterodactyl_db_root,type=env,target=MYSQL_ROOT_PASSWORD
+Secret=pterodactyl_db,type=env,target=MYSQL_PASSWORD
+Evironment=MYSQL_USER=pterodactyl
 Environment=MYSQL_TCP_PORT=3310
 
 [Service]

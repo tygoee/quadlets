@@ -4,6 +4,7 @@ Description=MariaDB container for Nextcloud
 [Container]
 ContainerName=mariadb
 Image=docker.io/library/mariadb:latest
+AutoUpdate=registry
 Pod=nextcloud.pod
 Volume=nextcloud-mariadb:/var/lib/mysql
 Secret=nextcloud_mysql_root,type=env,target=MYSQL_ROOT_PASSWORD

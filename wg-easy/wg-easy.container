@@ -4,6 +4,7 @@ Description=WireGuard Easy container
 [Container]
 ContainerName=wg-easy
 Image=ghcr.io/wg-easy/wg-easy:latest
+AutoUpdate=registry
 Environment=WG_HOST=example.com
 Secret=wg_easy_hash,type=env,target=PASSWORD_HASH
 Volume=wireguard:/etc/wireguard:Z

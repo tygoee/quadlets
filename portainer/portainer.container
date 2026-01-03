@@ -4,6 +4,7 @@ Description=Portainer container
 [Container]
 ContainerName=portainer
 Image=docker.io/portainer/portainer-ce:latest
+AutoUpdate=registry
 PublishPort=9000:9000
 Volume=%t/podman/podman.sock:/var/run/docker.sock
 Volume=portainer-data:/data

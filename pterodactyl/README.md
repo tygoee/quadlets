@@ -33,7 +33,7 @@ Add your own IP address/domain name in `APP_URL` in [pterodactyl.env](./pterodac
 This pod is best used with a reverse proxy like Caddy or Nginx Proxy Manager. Point these domains to the corresponding ports in your reverse proxy:
 
 - panel.example.com to port 8000
-- node.example.com to port 8080 (dont open this publicly)
+- node.example.com to port 8080
 
 Port 443 is passed to the container to allow the reverse proxy to communicate, and to resolve WebSocket addresses
 
@@ -43,9 +43,13 @@ If you don't have a domain name, just open port 8000 to access the panel.
 
 ## Making a symlink to the container
 
-After starting the pod (to create the `pterodactyl-data` directory), you will need to run the following to create a symlink as a user with sudo/root access. This required to keep the default server file directory because of a quirk in pterodactyl:
+You will need to create a symlink as a user with sudo/root access. This is required to keep the default server file directory because of a quirk in pterodactyl. Before that, you'll need to create the volume:
 
-```
+```sh
+# As the pterodactyl/podman user
+podman volume create pterodactyl-data
+
+# As a user with sudo/root access
 sudo ln -s ~/.local/share/containers/storage/volumes/pterodactyl-data/_data /var/lib/pterodactyl
 ```
 
@@ -80,6 +84,24 @@ Now, (re)start Wings, after which it should start in a succeeded state:
 systemctl --user restart pterodactyl-wings.service
 ```
 
+If it fails due to the `172.18.0.0/24` network being in use (which you can check by searching the output of `ip a` for anything in this range), you'll have to change the subnet in `config.yml` by adding this to the end, replacing `172.18` with another prefix (preferably in the RFC-1918 `172.16` to `172.31` range):
+
+```yaml
+docker:
+  network:
+    interface: 172.18.0.1
+    name: pterodactyl_nw
+    driver: bridge
+    network_mode: pterodactyl_nw
+    interfaces:
+      v4:
+        subnet: 172.18.0.0/24
+        gateway: 172.18.0.1
+      v6:
+        subnet: fdba:17c8:6c94::/64
+        gateway: fdba:17c8:6c94::1011
+```
+
 In the Node's About tab under Information, you should now stop seeing loading icons and start to see information about the node. Before running servers you still need to change the log driver:
 
 - In `config.yml`, under `docker` > `log_config`, change `type` to `json-file`
@@ -104,7 +126,7 @@ cat /sys/fs/cgroup/$(cat /proc/self/cgroup | cut -d: -f3)/cgroup.controllers
 
 ```ini
 [Service]
-Delegate=
+Delegate=... io
 ```
 
 - Reload and reexec system both as root and the affected user(s):
@@ -126,15 +148,10 @@ This is optional, unless your server requires a database
 
 ```sh
 echo -n "password_here" | podman secret create pterodactyl_db_root -
+echo -n "password_here" | podman secret create pterodactyl_db -
 ```
 
 - Move `mariadb.container` from `optional/` to `~/.config/containers/systemd/`
-
-- Change `Network=` in `pterodacyl.pod` under `[Container]`:
-
-```ini
-Network=pasta:-T,443,-T,3310
-```
 
 - Add a database user (here the username `servers` is used). More info [here](https://pterodactyl.io/tutorials/mysql_setup.html#creating-a-database-host-for-nodes):
 
@@ -144,8 +161,8 @@ podman exec -it pterodactyl-db mariadb -u root -p
 ```
 
 ```sql
-CREATE USER 'servers'@'%' IDENTIFIED BY 'somepassword';
-GRANT ALL PRIVILEGES ON *.* TO 'servers'@'%' WITH GRANT OPTION;
+CREATE USER 'database'@'%' IDENTIFIED BY 'somepassword';
+GRANT ALL PRIVILEGES ON *.* TO 'database'@'%' WITH GRANT OPTION;
 ```
 
 - Enter `quit;` to exit.
@@ -153,7 +170,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'servers'@'%' WITH GRANT OPTION;
 - Now open the web admin panel, go to Databases and add one with these options:
     - Host: `pterodactyl-db`
     - Port: `3310`
-    - Username: the MariaDB username. I used `servers`
+    - Username: the MariaDB username. I used `database`
     - Password: The MariaDB user password you just created.
 
 # Sources
@@ -165,6 +182,8 @@ GRANT ALL PRIVILEGES ON *.* TO 'servers'@'%' WITH GRANT OPTION;
 [Installing Wings | Pterodactyl](https://pterodactyl.io/wings/1.0/installing.html)
 
 [wings/docker-compose.example.yml at develop · pterodactyl/wings](https://github.com/pterodactyl/wings/blob/develop/docker-compose.example.yml)
+
+[panel/docker-compose.example.yml at 1.0-develop · pterodactyl/panel](https://github.com/pterodactyl/panel/blob/1.0-develop/docker-compose.example.yml)
 
 [Delegate | systemd.resource-control](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html#Delegate=)
 

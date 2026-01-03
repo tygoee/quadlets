@@ -4,6 +4,7 @@ Description=Pterodactyl panel
 [Container]
 ContainerName=pterodactyl-panel
 Image=ghcr.io/pterodactyl/panel:latest
+AutoUpdate=registry
 Pod=pterodactyl.pod
 Volume=pterodactyl-panel:/app/var
 Volume=pterodactyl-nginx:/etc/nginx/http.d
@@ -11,6 +12,14 @@ Volume=pterodactyl-logs:/app/storage/logs
 Secret=pterodactyl_mysql,type=env,target=DB_PASSWORD
 Secret=pterodactyl_redis,type=env,target=REDIS_PASSWORD
 Secret=pterodactyl_hashids,type=env,target=HASHIDS_SALT
+Environment=CACHE_DRIVER=redis
+Environment=SESSION_DRIVER=redis
+Environment=QUEUE_DRIVER=redis
+Environment=REDIS_HOST=pterodactyl-redis
+Environment=DB_HOST=pterodactyl-mariadb
+Environment=DB_PORT=3306
+Environment=TRUSTED_PROXIES='*'
+Environment=HASHIDS_LENGTH=8
 EnvironmentFile=%h/.config/containers/environment/pterodactyl.env
 
 [Install]

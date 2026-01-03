@@ -4,6 +4,7 @@ Description=Pterodactyl Wings container
 [Container]
 ContainerName=pterodactyl-wings
 Image=ghcr.io/pterodactyl/wings:latest
+AutoUpdate=registry
 Pod=pterodactyl.pod
 EnvironmentFile=%h/.config/containers/environment/pterodactyl.env
 Volume=%t/podman/podman.sock:/var/run/docker.sock
