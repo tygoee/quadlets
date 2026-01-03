@@ -14,6 +14,3 @@ Volume=pterodactyl-data:/var/lib/pterodactyl:z
 Volume=pterodactyl-log:/var/log/pterodactyl
 Volume=pterodactyl-tmp:/tmp/pterodactyl
 SecurityLabelDisable=true
-
-[Install]
-WantedBy=default.target

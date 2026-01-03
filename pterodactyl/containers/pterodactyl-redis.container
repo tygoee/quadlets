@@ -8,6 +8,3 @@ AutoUpdate=registry
 Pod=pterodactyl.pod
 Secret=pterodactyl_redis,type=env,target=REDIS_PASSWORD
 Exec=/bin/sh -c "redis-server --requirepass $${REDIS_PASSWORD}"
-
-[Install]
-WantedBy=default.target

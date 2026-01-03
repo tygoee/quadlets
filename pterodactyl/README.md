@@ -69,7 +69,7 @@ podman exec -it pterodactyl-panel php artisan p:user:make
         - Behind Proxy: *Behind Proxy*
         - Daemon port: *443*
     - **Without a domain name or reverse proxy**
-        - FQDN: *localhost*
+        - FQDN: Wings node ip address, this will also need to be reached externally for websocket connections
         - Communicate Over SSL: *Use HTTP Connection*
         - Behind Proxy: *Not Behind Proxy* (default)
         - Daemon port: *8080* (default)
@@ -144,16 +144,16 @@ Read more in the first answer of [this GitHub issue](https://github.com/containe
 
 This is optional, unless your server requires a database
 
-- Create a secret for its root password:
+- Create secrets for its root password and user password:
 
 ```sh
-echo -n "password_here" | podman secret create pterodactyl_db_root -
 echo -n "password_here" | podman secret create pterodactyl_db -
+echo -n "password_here" | podman secret create pterodactyl_db_root -
 ```
 
 - Move `mariadb.container` from `optional/` to `~/.config/containers/systemd/`
 
-- Add a database user (here the username `servers` is used). More info [here](https://pterodactyl.io/tutorials/mysql_setup.html#creating-a-database-host-for-nodes):
+- Grant all privileges to the pterodactyl database user. More info [here](https://pterodactyl.io/tutorials/mysql_setup.html#creating-a-database-host-for-nodes):
 
 ```sh
 podman exec -it pterodactyl-db mariadb -u root -p
@@ -161,25 +161,25 @@ podman exec -it pterodactyl-db mariadb -u root -p
 ```
 
 ```sql
-CREATE USER 'database'@'%' IDENTIFIED BY 'somepassword';
-GRANT ALL PRIVILEGES ON *.* TO 'database'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'pterodactyl'@'%' WITH GRANT OPTION;
+exit;
 ```
-
-- Enter `quit;` to exit.
 
 - Now open the web admin panel, go to Databases and add one with these options:
     - Host: `pterodactyl-db`
     - Port: `3310`
-    - Username: the MariaDB username. I used `database`
-    - Password: The MariaDB user password you just created.
+    - Username: `pterodactyl`
+    - Password: The MariaDB user password for this database
 
 # Sources
 
 [I Built the PERFECT Game Server with Pterodactyl and Docker | Techno Tim](https://technotim.live/posts/pterodactyl-game-server/)
 
-[Getting Started | Pterodactyl](https://pterodactyl.io/panel/1.0/getting_started.html)
+[Getting Started | Pterodactyl](https://pterodactyl.io/panel/current/getting_started.html)
 
-[Installing Wings | Pterodactyl](https://pterodactyl.io/wings/1.0/installing.html)
+[Installing Wings | Pterodactyl](https://pterodactyl.io/wings/current/installing.html)
+
+[Additional Configuration | Pterodactyl](https://pterodactyl.io/wings/current/configuration.html)
 
 [wings/docker-compose.example.yml at develop · pterodactyl/wings](https://github.com/pterodactyl/wings/blob/develop/docker-compose.example.yml)
 

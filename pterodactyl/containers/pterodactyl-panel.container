@@ -21,6 +21,3 @@ Environment=DB_PORT=3306
 Environment=TRUSTED_PROXIES='*'
 Environment=HASHIDS_LENGTH=8
 EnvironmentFile=%h/.config/containers/environment/pterodactyl.env
-
-[Install]
-WantedBy=default.target
