@@ -1,3 +1,6 @@
+> [!WARNING]  
+> As of January 2026, the latest panel version (`v1.12.0`) has a bug, making it only work after updating from version `v1.11.11`. This means you need to change the version tag in `pterodactyl-panel.container` from `latest` to `v1.11.11` before installing. You can change it back to `latest` after you've passed [the step where you're starting the pod](#connecting-wings-to-pterodactyl-panel). This issue is tracked in the pterodactyl/panel repository: [#5521](https://github.com/pterodactyl/panel/issues/5521)
+
 # Additional configuration
 
 First and modify the timezone in [pterodactyl.env](./pterodactyl.env).
@@ -39,7 +42,7 @@ Port 443 is passed to the container to allow the reverse proxy to communicate, a
 
 ### Without a domain name or reverse proxy (without HTTPS)
 
-If you don't have a domain name, just open port 8000 to access the panel. 
+If you don't have a domain name, just open port 8000 to access the panel.
 
 ## Making a symlink to the container
 
@@ -64,17 +67,17 @@ podman exec -it pterodactyl-panel php artisan p:user:make
 - Click the cog icon in the top right corner for the admin panel
 - Go to locations and create a new a location for the node
 - Go to nodes and create a new node. Make sure to choose the following options and modify the rest to your choice:
-    - **With a domain name and HTTPS on a reverse proxy**
-        - FQDN: *node.example.com* (use your own domain)
-        - Behind Proxy: *Behind Proxy*
-        - Daemon port: *443*
-    - **Without a domain name or reverse proxy**
-        - FQDN: Wings node ip address, this will also need to be reached externally for websocket connections
-        - Communicate Over SSL: *Use HTTP Connection*
-        - Behind Proxy: *Not Behind Proxy* (default)
-        - Daemon port: *8080* (default)
-    - Node Visibility: Keep it public, to prevent podman issues. You can prevent outside access with your firewall
-    - Daemon Server File Directory: You will probably want to keep the default option (this is only possible if you have made a symlink, explained earlier)
+  - **With a domain name and HTTPS on a reverse proxy**
+    - FQDN: _node.example.com_ (use your own domain)
+    - Behind Proxy: _Behind Proxy_
+    - Daemon port: _443_
+  - **Without a domain name or reverse proxy**
+    - FQDN: Wings node ip address, this will also need to be reached externally for websocket connections
+    - Communicate Over SSL: _Use HTTP Connection_
+    - Behind Proxy: _Not Behind Proxy_ (default)
+    - Daemon port: _8080_ (default)
+  - Node Visibility: Keep it public, to prevent podman issues. You can prevent outside access with your firewall
+  - Daemon Server File Directory: You will probably want to keep the default option (this is only possible if you have made a symlink, explained earlier)
 
 - Once created, go to the Configuation tab. Create the file `~/.local/share/containers/storage/volumes/pterodactyl-config/_data/config.yml`, copy the config in there and change the port to 8080
 
@@ -106,7 +109,7 @@ In the Node's About tab under Information, you should now stop seeing loading ic
 
 - In `config.yml`, under `docker` > `log_config`, change `type` to `json-file`
 
-Restart Wings again. Now you can allocate some ports you need to use for your server(s) in the *Allocation* tab. Under *IP Address* enter `0.0.0.0` (or `::` for IPv6). Now you're ready to create a server. **When creating a server, make sure to set Enable OOM Killer to *true*, as disabling the OOM Killer fails.**
+Restart Wings again. Now you can allocate some ports you need to use for your server(s) in the _Allocation_ tab. Under _IP Address_ enter `0.0.0.0` (or `::` for IPv6). Now you're ready to create a server. **When creating a server, make sure to set Enable OOM Killer to _true_, as disabling the OOM Killer fails.**
 
 For logs about Wings, look at `podman logs pterodactyl-wings`. If a server is created and fails to run, search for the container in `podman ps --all` and get its logs with `podman logs container-uuid`, `container-uuid` being a long string of letters and numbers
 
@@ -166,10 +169,10 @@ exit;
 ```
 
 - Now open the web admin panel, go to Databases and add one with these options:
-    - Host: `pterodactyl-db`
-    - Port: `3310`
-    - Username: `pterodactyl`
-    - Password: The MariaDB user password for this database
+  - Host: `pterodactyl-db`
+  - Port: `3310`
+  - Username: `pterodactyl`
+  - Password: The MariaDB user password for this database
 
 # Sources
 
