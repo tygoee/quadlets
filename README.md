@@ -2,28 +2,13 @@
 
 Collection with some of my Quadlet configuration files, or modifications of configurations found on the internet. Feel free to contribute if you wrote a better implementation.
 
-A part of the these containers has its installation automated with ansible, in my [ansibles repository](https://github.com/tygoee/ansibles)
-
-## List of containers and pods
-
-- DDClient [View ↗](./ddclient)
-- Jellyfin [View ↗](./jellyfin)
-- Nextcloud (Apache) [View ↗](./nextcloud-apache)
-- Nextcloud (Caddy) [View ↗](./nextcloud-caddy)
-- Portainer [View ↗](./portainer)
-- Pterodactyl [View ↗](./pterodactyl)
-- Technitium [View ↗](./technitium-dns)
-
-### Unused/not updated containers and pods
-
-- Crafty [View ↗](./crafty)
-- WG-Easy [View ↗](./wg-easy)
+Some of these containers have their installation automated with ansible, in my [ansibles repository](https://github.com/tygoee/ansibles)
 
 ## Installation instructions
 
-1. The default quadlet container directory for a rootless system is `~/.config/containers/systemd/`. Place all files from the container/pod in that directory. When running a rootful container, place them in a corresponding [system-wide directory](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html#podman-rootful-unit-search-path), like `/etc/containers/systemd/`
+1. The default quadlet container directory for a rootless container is `~/.config/containers/systemd/`, and for a container running as root `/etc/containers/systemd/`. Place all files from the container/pod in that directory.
 
-2. [Caution: look in the container file where it points, this repo is kind of inconsistent] Place the environment (.env) file(s) in `~/.config/containers/environment/` and modify them to your needs. If you need to place them in another directory, modify the container file(s) to point there.
+2. Place the environment (.env) file(s) in `~/.config/containers/environment/` or `/etc/container/environment` and modify them to your needs. If you need to place them in another directory, modify the container file(s) to point there. (These are currently hardcoded; look in the container file where it points, as this repo is kind of inconsistent)
 
 > [!TIP]  
 > These common variables are templatable with Jinja2: `timezone` and `containername.(user,group,uid,gid,home)`
