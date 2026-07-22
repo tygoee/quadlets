@@ -1,0 +1,17 @@
+[Unit]
+Description=Joplin Server container
+
+[Container]
+ContainerName=joplin-server
+Image=docker.io/joplin/server:latest
+AutoUpdate=registry
+# The volume is only required when mounting config files for SSO
+Volume=joplin-config:/config
+Pod=joplin-server.pod
+EnvironmentFile=/etc/containers/environment/joplin-server.env
+
+[Service]
+Restart=unless-stopped
+
+[Install]
+WantedBy=default.target

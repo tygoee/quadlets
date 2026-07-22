@@ -1,0 +1,23 @@
+[Unit]
+Description=PostgresSQL container for Authentik
+
+[Container]
+ContainerName=authentik-postgres
+Image=docker.io/library/postgres:latest
+AutoUpdate=registry
+Volume=authentik-postgres:/var/lib/postgresql:Z
+Network=authentik.network
+UserNS=auto
+EnvironmentFile=/etc/containers/environment/authentik-postgres.env
+
+HealthCmd=pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
+HealthInterval=30s
+HealthRetries=5
+HealthStartPeriod=20s
+HealthTimeout=5s
+
+[Service]
+Restart=unless-stopped
+
+[Install]
+WantedBy=default.target
