@@ -1,0 +1,11 @@
+[Unit]
+Description=Authentik pod
+
+[Network]
+NetworkName=authentik-net
+
+[Service]
+Restart=unless-stopped
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,27 @@
+[Unit]
+Description=Authentik server container
+# Not sure if this actually waits for the health check but it's good enough
+Requires=authentik-postgres.container
+After=authentik-postgres.container
+PartOf=authentik-postgres.container
+Requires=authentik-worker.container
+After=authentik-worker.container
+PartOf=authentik-worker.container
+
+[Container]
+ContainerName=authentik-server
+Image=docker.io/authentik/server:2026.5.5
+Exec=server
+AutoUpdate=registry
+Volume=authentik-data:/data
+PublishPort=9000:9000
+#PublishPort=9443:9443
+Network=authentik.network
+UserNS=auto
+EnvironmentFile=/etc/containers/environment/authentik.env
+
+[Service]
+Restart=unless-stopped
+
+[Install]
+WantedBy=default.target

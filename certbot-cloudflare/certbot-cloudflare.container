@@ -1,0 +1,19 @@
+[Unit]
+Description=Certbot container for Cloudflare
+
+[Container]
+ContainerName=certbot-cloudflare
+Image=docker.io/certbot/dns-cloudflare:latest
+AutoUpdate=registry
+UserNS=auto
+Volume=letsencrypt:/etc/letsencrypt:z
+Volume=letsencrypt-data:/var/lib/letsencrypt:Z
+Volume=certbot-creds:/creds:Z
+EnvironmentFile=/etc/containers/environment/certbot.env
+Exec=renew --dns-cloudflare --dns-cloudflare-credentials /creds/cloudflare.ini --dns-cloudflare-propagation-seconds 60
+
+[Service]
+Restart=no
+
+[Install]
+WantedBy=default.target

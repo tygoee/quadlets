@@ -1,0 +1,13 @@
+[Unit]
+Description=Joplin Server pod
+
+[Pod]
+PodName=joplin-server
+PublishPort=22300:22300 
+UserNS=auto
+
+[Service]
+Restart=unless-stopped
+
+[Install]
+WantedBy=default.target

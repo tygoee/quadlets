@@ -21,9 +21,9 @@ A part of the these containers has its installation automated with ansible, in m
 
 ## Installation instructions
 
-1. The default quadlet container directory for a rootless system is `~/.config/containers/systemd/`. Place all files from the container/pod in that directory. When running a rootful container, place them in a corresponding [system-wide directory](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html#podman-rootful-unit-search-path), like `/etc/containers`
+1. The default quadlet container directory for a rootless system is `~/.config/containers/systemd/`. Place all files from the container/pod in that directory. When running a rootful container, place them in a corresponding [system-wide directory](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html#podman-rootful-unit-search-path), like `/etc/containers/systemd/`
 
-2. Place the environment (.env) file(s) in `~/.config/containers/environment/` and modify them to your needs. If you need to place them in another directory, modify the container file(s) to point there.
+2. [Caution: look in the container file where it points, this repo is kind of inconsistent] Place the environment (.env) file(s) in `~/.config/containers/environment/` and modify them to your needs. If you need to place them in another directory, modify the container file(s) to point there.
 
 > [!TIP]  
 > These common variables are templatable with Jinja2: `timezone` and `containername.(user,group,uid,gid,home)`

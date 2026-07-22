@@ -1,0 +1,16 @@
+[Unit]
+Description=PostgresSQL container for Joplin Server
+
+[Container]
+ContainerName=joplin-postgres
+Image=docker.io/library/postgres:latest
+AutoUpdate=registry
+Volume=joplin-postgres:/var/lib/postgresql:Z
+Pod=joplin-server.pod
+EnvironmentFile=/etc/containers/environment/joplin-postgres.env
+
+[Service]
+Restart=unless-stopped
+
+[Install]
+WantedBy=default.target
