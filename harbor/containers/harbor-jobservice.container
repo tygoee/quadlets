@@ -2,6 +2,8 @@
 Description=Harbor job service container
 BindsTo=harbor-core.container
 After=harbor-core.container
+StartLimitBurst=5
+StartLimitIntervalSec=60s
 
 [Container]
 ContainerName=harbor-jobservice
@@ -20,3 +22,4 @@ UserNS=auto
 
 [Service]
 Restart=always
+RestartSec=5s

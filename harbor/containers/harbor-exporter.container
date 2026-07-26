@@ -2,6 +2,8 @@
 Description=Harbor exporter container
 BindsTo=harbor-core.container
 After=harbor-core.container
+StartLimitBurst=5
+StartLimitIntervalSec=60s
 
 [Container]
 ContainerName=harbor-exporter
@@ -15,3 +17,4 @@ UserNS=auto
 
 [Service]
 Restart=always
+RestartSec=5s

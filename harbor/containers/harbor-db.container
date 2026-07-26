@@ -12,7 +12,7 @@ AddCapability=SETGID SETUID
 EnvironmentFile=/etc/harbor/db/env
 Environment=PGDATA=/var/lib/postgresql/data/pgdata
 Secret=harbor_db,type=env,target=POSTGRES_PASSWORD
-Volume=/var/lib/harbor/database:/var/lib/postgreql/data:idmap,z
+Volume=/var/lib/harbor/database:/var/lib/postgresql/data:idmap,z
 UserNS=auto
 ShmSize=1g
 

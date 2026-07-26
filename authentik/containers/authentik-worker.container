@@ -11,6 +11,7 @@ User=root
 AutoUpdate=registry
 Volume=authentik-data:/data:idmap,z
 Volume=authentik-certs:/certs:idmap,Z
+Volume=authentik-templates:/templates:idmap,Z
 Network=authentik.network
 UserNS=auto
 EnvironmentFile=/etc/containers/environment/authentik.env

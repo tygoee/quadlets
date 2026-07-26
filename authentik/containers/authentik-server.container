@@ -9,6 +9,7 @@ Image=ghcr.io/goauthentik/server:2026.5.5
 Exec=server
 AutoUpdate=registry
 Volume=authentik-data:/data:idmap,z
+Volume=authentik-media:/media:idmap,Z
 PublishPort=9000:9000
 #PublishPort=9443:9443
 Network=authentik.network

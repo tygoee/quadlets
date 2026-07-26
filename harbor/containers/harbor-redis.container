@@ -1,5 +1,6 @@
 [Unit]
 Description=Harbor redis container
+Wants=harbor-trivy-adapter.container
 PartOf=harbor-trivy-adapter.container harbor-core.container
 Before=harbor-trivy-adapter.container harbor-core.container
 
