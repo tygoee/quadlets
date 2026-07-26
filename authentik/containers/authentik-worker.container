@@ -1,6 +1,6 @@
 [Unit]
 Description=Authentik worker container
-Requires=authentik-postgres.container
+BindsTo=authentik-postgres.container
 After=authentik-postgres.container
 
 [Container]
@@ -9,8 +9,8 @@ Image=ghcr.io/goauthentik/server:2026.5.5
 Exec=worker
 User=root
 AutoUpdate=registry
-Volume=authentik-data:/data
-Volume=authentik-certs:/certs
+Volume=authentik-data:/data:idmap,z
+Volume=authentik-certs:/certs:idmap,Z
 Network=authentik.network
 UserNS=auto
 EnvironmentFile=/etc/containers/environment/authentik.env

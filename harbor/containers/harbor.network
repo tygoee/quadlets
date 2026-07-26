@@ -1,0 +1,8 @@
+[Unit]
+Description=Harbor network
+
+[Network]
+NetworkName=harbor
+
+[Install]
+WantedBy=multi-user.target

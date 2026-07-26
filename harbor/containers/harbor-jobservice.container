@@ -1,0 +1,22 @@
+[Unit]
+Description=Harbor job service container
+BindsTo=harbor-core.container
+After=harbor-core.container
+
+[Container]
+ContainerName=harbor-jobservice
+Image=localhost/goharbor/harbor-jobservice:{{ harbor.version }}
+Network=harbor.network
+DropCapability=all
+AddCapability=SETGID SETUID
+EnvironmentFile=/etc/harbor/jobservice/env
+Secret=harbor_core,type=env,target=CORE_SECRET
+Secret=harbor_jobservice,type=env,target=JOBSERVICE_SECRET
+Secret=harbor_registry,type=env,target=REGISTRY_CREDENTIAL_PASSWORD
+Volume=/var/lib/harbor/job_logs:/var/log/jobs:idmap,z
+Volume=/etc/harbor/jobservice/config.yml:/etc/jobservice/config.yml:idmap,z
+Volume=/etc/harbor/shared/trust-certificates:/harbor_cust_cert:idmap,z
+UserNS=auto
+
+[Service]
+Restart=always

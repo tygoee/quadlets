@@ -1,0 +1,21 @@
+[Unit]
+Description=Harbor registry controller container
+PartOf=harbor-core.container
+Before=harbor-core.container
+
+[Container]
+ContainerName=harbor-registryctl
+Image=localhost/goharbor/harbor-registryctl:{{ harbor.version }}
+Network=harbor.network
+DropCapability=all
+AddCapability=CHOWN SETGID SETUID
+Secret=harbor_core,type=env,target=CORE_SECRET
+Secret=harbor_jobservice,type=env,target=JOBSERVICE_SECRET
+Volume=/var/lib/harbor/registry:/storage:idmap,z
+Volume=/etc/harbor/registry:/etc/registry:idmap,z
+Volume=/etc/harbor/registryctl/config.yml:/etc/registryctl/config.yml:idmap,z
+Volume=/etc/harbor/shared/trust-certificates:/harbor_cust_cert:idmap,z
+UserNS=auto
+
+[Service]
+Restart=always

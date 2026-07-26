@@ -1,0 +1,16 @@
+[Unit]
+Description=Harbor redis container
+PartOf=harbor-trivy-adapter.container harbor-core.container
+Before=harbor-trivy-adapter.container harbor-core.container
+
+[Container]
+ContainerName=harbor-redis
+Image=localhost/goharbor/valkey-photon:{{ harbor.version }}
+Network=harbor.network
+DropCapability=all
+AddCapability=CHOWN SETGID SETUID
+Volume=/var/lib/harbor/redis:/var/lib/redis:idmap,z
+UserNS=auto
+
+[Service]
+Restart=always

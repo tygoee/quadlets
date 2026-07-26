@@ -1,0 +1,18 @@
+[Unit]
+Description=Harbor trivy adapter container
+BindsTo=harbor-redis.container
+After=harbor-redis.container
+
+[Container]
+ContainerName=harbor-trivy-adapter
+Image=localhost/goharbor/trivy-adapter-photon:{{ harbor.version }}
+Network=harbor.network
+DropCapability=all
+EnvironmentFile=/etc/harbor/trivy-adapter/env
+Volume=/var/lib/harbor/trivy-adapter/trivy:/home/scanner/.cache/trivy:idmap,z
+Volume=/var/lib/harbor/trivy-adapter/reports:/home/scanner/.cache/reports:idmap,z
+Volume=/etc/harbor/shared/trust-certificates:/harbor_cust_cert:idmap,z
+UserNS=auto
+
+[Service]
+Restart=always

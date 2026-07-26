@@ -1,0 +1,17 @@
+[Unit]
+Description=Harbor exporter container
+BindsTo=harbor-core.container
+After=harbor-core.container
+
+[Container]
+ContainerName=harbor-exporter
+Image=localhost/goharbor/harbor-exporter:{{ harbor.version }}
+Network=harbor.network
+DropCapability=all
+EnvironmentFile=/etc/harbor/exporter/env
+Secret=harbor_db,type=env,target=HARBOR_DATABASE_PASSWORD
+Volume=/etc/harbor/shared/trust-certificates:/harbor_cust_cert:idmap,z
+UserNS=auto
+
+[Service]
+Restart=always

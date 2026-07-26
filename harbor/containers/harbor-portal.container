@@ -1,0 +1,16 @@
+[Unit]
+Description=Harbor portal container
+PartOf=harbor-core.container
+Before=harbor-core.container
+
+[Container]
+ContainerName=harbor-portal
+Image=localhost/goharbor/harbor-portal:{{ harbor.version }}
+Network=harbor.network
+DropCapability=all
+AddCapability=CHOWN SETGID SETUID
+Volume=/etc/harbor/portal/nginx.conf:/etc/nginx/nginx.conf:idmap,z
+UserNS=auto
+
+[Service]
+Restart=always

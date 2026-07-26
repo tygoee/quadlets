@@ -1,12 +1,14 @@
 [Unit]
 Description=Joplin Server container
+BindsTo=joplin-postgres.container
+After=joplin-postgres.container
 
 [Container]
 ContainerName=joplin-server
 Image=docker.io/joplin/server:latest
 AutoUpdate=registry
 # The volume is only required when mounting config files for SSO
-Volume=joplin-config:/config
+Volume=joplin-config:/config:idmap,Z
 Pod=joplin-server.pod
 EnvironmentFile=/etc/containers/environment/joplin-server.env
 

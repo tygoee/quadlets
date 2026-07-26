@@ -1,0 +1,22 @@
+[Unit]
+Description=Harbor nginx container
+BindsTo=harbor-core.container harbor
+After=harbor-core.container
+StartLimitBurst=5
+StartLimitIntervalSec=60s
+
+[Container]
+ContainerName=harbor-nginx
+Image=localhost/goharbor/nginx-photon:{{ harbor.version }}
+DropCapability=all
+AddCapability=CHOWN SETGID SETUID
+Network=harbor.network
+PublishPort=8080:8080
+PublishPort=9090:9090
+Volume=/etc/harbor/nginx:/etc/nginx:idmap,z
+Volume=/etc/harbor/shared/trust-certificates:/harbor_cust_cert:idmap,z
+UserNS=auto
+
+[Service]
+Restart=always
+RestartSec=5s

@@ -1,0 +1,36 @@
+[Unit]
+Description=Harbor core container
+BindsTo=harbor-registry.container harbor-registryctl.container harbor-redis.container harbor-db.container harbor-portal.container
+After=harbor-registry.container harbor-registryctl.container harbor-redis.container harbor-db.container harbor-portal.container
+Wants=harbor-jobservice.container harbor-exporter.container harbor-nginx.container
+Before=harbor-jobservice.container harbor-exporter.container harbor-nginx.container
+
+[Container]
+ContainerName=harbor-core
+Image=localhost/goharbor/harbor-core:{{ harbor.version }}
+Network=harbor.network
+DropCapability=all
+AddCapability=SETGID SETUID
+EnvironmentFile=/etc/harbor/core/env
+Secret=harbor_db,type=env,target=POSTGRESQL_PASSWORD
+Secret=harbor_core,type=env,target=CORE_SECRET
+Secret=harbor_jobservice,type=env,target=JOBSERVICE_SECRET
+Secret=harbor_registry,type=env,target=REGISTRY_CREDENTIAL_PASSWORD
+Secret=harbor_csrf,type=env,target=CSRF_TOKEN
+Secret=harbor_key,type=mount,target=/etc/core/private_key.pem
+Secret=harbor_secretkey,type=mount,target=/etc/core/key
+Secret=harbor_robotscanner,type=env,target=ROBOT_SCANNER_NAME_PREFIX
+# Replace {{ harbor.hostname }} with the hostname that is reachable externally, like reg.mydomain.com
+Environment=EXT_ENDPOINT=http://{{ harbor.hostname }}
+Volume=/var/lib/harbor/ca_download:/etc/core/ca/:idmap,z
+Volume=/var/lib/harbor:/data:idmap,z
+Volume=/etc/harbor/core/certificates:/etc/core/certificates:idmap,z
+Volume=/etc/harbor/core/app.conf:/etc/core/app.conf:idmap,z
+Volume=/etc/harbor/shared/trust-certificates:/harbor_cust_cert:idmap,z
+UserNS=auto
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

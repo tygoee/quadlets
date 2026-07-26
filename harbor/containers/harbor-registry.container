@@ -1,0 +1,18 @@
+[Unit]
+Description=Harbor registry container
+
+[Container]
+ContainerName=harbor-registry
+Image=localhost/goharbor/registry-photon:{{ harbor.version }}
+Network=harbor.network
+DropCapability=all
+AddCapability=CHOWN SETGID SETUID
+Secret=harbor_registry,type=env,target=REGISTRY_HTTP_SECRET
+Volume=/var/lib/harbor/registry:/storage:idmap,z
+Volume=/etc/harbor/registry:/etc/registry:idmap,z
+# root.crt, probably not needed with a reverse proxy
+Volume=/etc/harbor/shared/trust-certificates:/harbor_cust_cert:idmap,z
+UserNS=auto
+
+[Service]
+Restart=always

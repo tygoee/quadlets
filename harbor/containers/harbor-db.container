@@ -1,0 +1,20 @@
+[Unit]
+Description=Harbor database container
+PartOf=harbor-core.container
+Before=harbor-core.container
+
+[Container]
+ContainerName=harbor-db
+Image=localhost/goharbor/harbor-db:{{ harbor.version }}
+Network=harbor.network
+DropCapability=all
+AddCapability=SETGID SETUID
+EnvironmentFile=/etc/harbor/db/env
+Environment=PGDATA=/var/lib/postgresql/data/pgdata
+Secret=harbor_db,type=env,target=POSTGRES_PASSWORD
+Volume=/var/lib/harbor/database:/var/lib/postgreql/data:idmap,z
+UserNS=auto
+ShmSize=1g
+
+[Service]
+Restart=always
