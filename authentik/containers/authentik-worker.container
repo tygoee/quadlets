@@ -2,6 +2,8 @@
 Description=Authentik worker container
 BindsTo=authentik-postgres.container
 After=authentik-postgres.container
+PartOf=authentik-server.container
+Before=authentik-server.container
 
 [Container]
 ContainerName=authentik-worker

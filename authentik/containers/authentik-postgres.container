@@ -1,5 +1,7 @@
 [Unit]
 Description=PostgresSQL container for Authentik
+PartOf=authentik-worker authentik-server.container
+Before=authentik-worker authentik-server.container
 
 [Container]
 ContainerName=authentik-postgres

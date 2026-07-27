@@ -17,18 +17,26 @@ You can verify the images are loaded by looking if they're listed in `sudo podma
 
 - Copy the config directory from this repository, rename it to `harbor`, and move it to `/etc/harbor`. This is the folder that is normally installed with the prepare script, with passwords stripped and hostnames changed.
 
+- Make it mountable by harbor containers:
+
+```sh
+sudo chown -R 10000:10000 /etc/harbor
+```
+
 - Create all these directories with the correct ownership:
 
 ```sh
-sudo install -d -o 10000 -g 10000 /var/lib/harbor
-sudo install -d -o 10000 -g 10000 /var/lib/harbor/ca_download
-sudo install -d -o 999 -g 999 /var/lib/harbor/database
-sudo install -d -o 10000 -g 10000 /var/lib/harbor/job_logs
-sudo install -d -o 999 -g 999 /var/lib/harbor/redis
-sudo install -d -o 10000 -g 10000 /var/lib/harbor/registry
-sudo install -d -o 10000 -g 10000 /var/lib/harbor/trivy-adapter
-sudo install -d -o 10000 -g 10000 /var/lib/harbor/trivy-adapter/reports
-sudo install -d -o 10000 -g 10000 /var/lib/harbor/trivy-adapter/trivy
+sudo mkdir -p /var/lib/harbor/ca_download
+sudo mkdir -p /var/lib/harbor/database
+sudo mkdir -p /var/lib/harbor/job_logs
+sudo mkdir -p /var/lib/harbor/redis
+sudo mkdir -p /var/lib/harbor/registry
+sudo mkdir -p /var/lib/harbor/trivy-adapter/reports
+sudo mkdir -p /var/lib/harbor/trivy-adapter/trivy
+
+sudo chown -R 10000:10000 /var/lib/harbor
+sudo chown -R 999:999 /var/lib/harbor/database
+sudo chown -R 999:999 /var/lib/harbor/redis
 ```
 
 
@@ -42,7 +50,7 @@ openssl rand -base64 16 | head -c 16 > harbor_jobservice
 openssl rand -base64 16 | head -c 16 > harbor_core
 openssl rand -base64 16 | head -c 16 > harbor_secretkey
 openssl rand -base64 8 | head -c 8 > harbor_robotscanner
-openssl genrsa -out private_key.pem 4096
+openssl genrsa -traditional -out private_key.pem 4096
 
 sudo podman secret create harbor_db harbor_db
 sudo podman secret create harbor_registry harbor_registry
@@ -60,6 +68,7 @@ sudo podman secret create harbor_key private_key.pem
 sudo dnf install -y httpd-tools # for htpasswd
 cat harbor_registry | htpasswd -ciB /etc/harbor/registry/passwd harbor_registry_user
 ```
+```
 
 If you need to run HTTPS with own certificates from within the container rather than signing it via a reverse proxy, please look at the sources.
 
@@ -75,6 +84,26 @@ After this, you can start `harbor-core.service` to start harbor! You can point y
 3. harbor-jobservice  
    harbor-exporter  
    harbor-nginx
+
+For when using harbor as a proxy cache: when finished, create a registry and proxy cache project in harbor and add the registries to podman; this is an example `/etc/containers/registries.conf.d/100-harbor.conf` config:
+
+```toml
+[[registry]]
+location = "docker.io"
+
+[[registry.mirror]]
+location = "reg.mydomain.com/docker-hub"
+pull-from-mirror = "all"
+
+[[registry]]
+location = "ghcr.io"
+
+[[registry.mirror]]
+location = "reg.mydomain.com/ghcr"
+pull-from-mirror = "all"
+```
+
+This will configure it for both rootful and rootless pulls. Verify this config by looking at `podman info`
 
 # Sources
 
