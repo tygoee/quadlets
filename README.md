@@ -8,7 +8,7 @@ Some of these containers have their installation automated with ansible, in my [
 
 1. The default quadlet container directory for a rootless container is `~/.config/containers/systemd/`, and for a container running as root `/etc/containers/systemd/`. Place all files from the container/pod in that directory.
 
-2. Place the environment (.env) file(s) in `~/.config/containers/environment/` or `/etc/container/environment` and modify them to your needs. If you need to place them in another directory, modify the container file(s) to point there. (These are currently hardcoded; look in the container file where it points, as this repo is kind of inconsistent)
+2. Place the environment (.env) file(s) in `~/.config/containers/environment/` or `/etc/containers/environment` and modify them to your needs. If you need to place them in another directory, modify the container file(s) to point there.
 
 > [!TIP]  
 > These common variables are templatable with Jinja2: `timezone` and `containername.(user,group,uid,gid,home)`

@@ -2,7 +2,7 @@
 Description=MariaDB container for Nextcloud
 
 [Container]
-ContainerName=mariadb
+ContainerName=nextcloud-mariadb
 Image=docker.io/library/mariadb:latest
 AutoUpdate=registry
 Pod=nextcloud.pod

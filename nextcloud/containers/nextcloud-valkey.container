@@ -2,14 +2,10 @@
 Description=Valkey container for Nextcloud
 
 [Container]
-ContainerName=valkey
+ContainerName=nextcloud-valkey
 Image=docker.io/valkey/valkey:alpine
 AutoUpdate=registry
 Pod=nextcloud.pod
-Exec=redis-server
-
-[Service]
-Restart=unless-stopped
 
 [Install]
 WantedBy=default.target

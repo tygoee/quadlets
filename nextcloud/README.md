@@ -1,8 +1,5 @@
 # Additional configuration
 
-> [!NOTE]  
-> This configuration is untested as some values have been changed and I'm not running this container anymore.
-
 When running other containers as the same user you might want to prefix the names (like `nextcloud-mariadb.container`)
 
 ## Create podman secrets
@@ -10,13 +7,17 @@ When running other containers as the same user you might want to prefix the name
 Create passwords for MariaDB:
 
 ```
-echo -n "msql root password" | podman secret create nextcloud_mysql_root -
-echo -n "msql nextcloud password" | podman secret create nextcloud_mysql -
+echo -n "password" | podman secret create nextcloud_mysql_root -
+echo -n "password" | podman secret create nextcloud_mysql -
 ```
 
 ## Open port
 
 Open port `5080/tcp` in your firewall or add it to your reverse proxy
+
+## NFS share
+
+The `.volume` file uses an NFS share. NFS shares can't use idmap, so we need to map a user for the share. As seen in `nextcloud.pod`, we map www-data (33) in the container to user:group 3000:3000. This means that on the NFS server, you need to do `chown -R 3000:3000 /.../folder`. You may also need to modify other values in the `.volume` file for your setup, or just use a local volume mount.
 
 # Sources
 

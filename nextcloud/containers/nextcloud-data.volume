@@ -1,0 +1,11 @@
+[Unit]
+Description=Nextcloud data volume
+
+[Volume]
+VolumeName=nextcloud-data
+Driver=local
+Type=nfs
+Device=openmediavault:/nextcloud
+
+[Install]
+WantedBy=default.target

@@ -5,12 +5,13 @@ Description=Nginx Proxy Manager container
 ContainerName=nginx-proxy-manager
 Image=docker.io/jc21/nginx-proxy-manager:latest
 AutoUpdate=registry
-Volume=npm-data:/data:Z
-Volume=letsencrypt:/etc/letsencrypt:Z
+Volume=npm-data:/data:idmap,Z
+Volume=letsencrypt:/etc/letsencrypt:idmap,z
 EnvironmentFile=/etc/containers/environment/nginx-proxy-manager.env
 PublishPort=80:80
 PublishPort=443:443
 PublishPort=81:81
+UserNS=auto
 
 [Service]
 Restart=unless-stopped

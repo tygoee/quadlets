@@ -90,17 +90,17 @@ For when using harbor as a proxy cache: when finished, create a registry and pro
 ```toml
 [[registry]]
 location = "docker.io"
+blocked = true
 
 [[registry.mirror]]
 location = "reg.mydomain.com/docker-hub"
-pull-from-mirror = "all"
 
 [[registry]]
 location = "ghcr.io"
+blocked = true
 
 [[registry.mirror]]
 location = "reg.mydomain.com/ghcr"
-pull-from-mirror = "all"
 ```
 
 This will configure it for both rootful and rootless pulls. Verify this config by looking at `podman info`

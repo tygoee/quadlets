@@ -1,5 +1,7 @@
 [Unit]
 Description=Harbor registry container
+PartOf=harbor-core.container
+Before=harbor-core.container
 
 [Container]
 ContainerName=harbor-registry

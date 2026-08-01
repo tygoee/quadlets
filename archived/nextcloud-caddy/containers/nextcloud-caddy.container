@@ -2,15 +2,12 @@
 Description=Caddy container for Nextcloud
 
 [Container]
-ContainerName=caddy
+ContainerName=nextcloud-caddy
 Image=docker.io/caddy:latest
 AutoUpdate=registry
-Volume=caddy-data:/data
-Volume=caddy:/etc/caddy
+Volume=nextcloud-caddy-data:/data
+Volume=nextcloud-caddy:/etc/caddy
 Volume=nextcloud-html:/var/www/html:ro,z
-
-[Service]
-Restart=unless-stopped
 
 [Install]
 WantedBy=default.target
